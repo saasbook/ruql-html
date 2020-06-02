@@ -6,12 +6,10 @@ module Ruql
     attr_reader :output
 
     def initialize(quiz,options={})
-      @gem_root = Gem.loaded_specs['ruql'].full_gem_path rescue '.'
-      @css = options.delete('--html-css')
+      @gem_root = Gem.loaded_specs['ruql-html'].full_gem_path rescue '.'
       @show_solutions = options.delete('--solutions')
       @show_tags = options.delete('--html-tags') || options.delete('--show-tags')
-      @template = options.delete('t') ||
-        options.delete('template') ||
+      @template = options.delete('--html-template') ||
         File.join(@gem_root, 'templates/simple.html.erb')
       @output = ''
       @quiz = quiz
@@ -20,17 +18,17 @@ module Ruql
 
     def self.allowed_options
       opts = [
-        ['--html-css', GetoptLong::REQUIRED_ARGUMENT],
-        ['--html-tags', GetoptLong::NO_ARGUMENT]
+        ['--html-tags', GetoptLong::NO_ARGUMENT],
+        ['--html-template', GetoptLong::REQUIRED_ARGUMENT]
       ]
       help = <<eos
 The HTML renderer uses  supports these options:
   --html-tags
       Show question's tags in HTML output, within an element <div class="tags">.
-  --template=file.html.erb
+  --html-template=file.html.erb
       Use file.html.erb as HTML template, which has <%= yield %> where questions should go.
       Default is #{@gem_root}/templates/simple.html.erb
-      You can use the local variables in the template:
+      You can use the local variables in the .erb template:
         <%= quiz.title %> - the quiz title
         <%= quiz.num_questions %> - total number of questions
         <%= quiz.points %> - total number of points for whole quiz
@@ -41,21 +39,9 @@ eos
     end
 
     def render_quiz
-      if @template
-        render_with_template do
-          render_questions
-          @output
-        end
-      else
-        @h.html do
-          @h.head do
-            @h.title @quiz.title
-            @h.link(:rel => 'stylesheet', :type =>'text/css', :href=>@css) if @css
-          end
-          @h.body do
-            render_questions
-          end
-        end
+      render_with_template do
+        render_questions
+        @output
       end
       self
     end
@@ -68,6 +54,7 @@ eos
       @output = output
     end
     
+    # this is what's called when the HTML template yields:
     def render_questions
       render_random_seed
       @h.ol :class => 'questions' do
@@ -76,7 +63,7 @@ eos
           when MultipleChoice, SelectMultiple, TrueFalse then render_multiple_choice(q,i)
           when FillIn then render_fill_in(q, i)
           else
-            raise "Unknown question type: #{q}"
+            raise Ruql::QuizContentError.new "Unknown question type: #{q}"
           end
         end
       end

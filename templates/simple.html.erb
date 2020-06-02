@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title><%= quiz.title %></title>
+    <style type="text/css" media="all">
+    body { font-family: Times, serif; }
+    .header { text-align: right; font-weight: bold; padding-right: 30%; line-height: 300%; }
+    h1 { text-align: center; }
+    ol.questions { list-style-type: number; }
+    li.question { page-break-inside: avoid; border-bottom: 1px solid grey;  }
+    li.question .tags { font-weight: bold; background-color: yellow; display: block; margin: 2px; padding: 2px; }
+    li.multiplechoice  ol.answers { list-style-type: lower-alpha; }
+    li.selectmultiple  ol.answers { vertical-align: center; list-style-type: none; list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUAQMAAAC3R49OAAAABlBMVEUAAAD///+l2Z/dAAAAEklEQVQImWNgAIL6/w+ogoEAAKI4Kp2NVIeDAAAAAElFTkSuQmCC');  }
+    li.truefalse ol.answers { list-style-type: none; }
+    .correct { color: green; font-weight: bold; border: 1px solid black; padding: 0.2ex; }
+    .incorrect { color: red }
+    .explanation { font-style: italic }
+    .instructions { clear: both; border: 1px solid black; align: center; padding: 2ex; margin: 2ex; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div id="name">Name:</div>
+      <div id="sid">Student ID:</div>
+    </div>
+    <h1><%= quiz.title %></h1>
+    <div align="center">
+      <%= quiz.num_questions %> questions, points indicated per question,
+      <%= quiz.points %> points total.  
+    </div>
+    <%= yield %>
+  </body>
+</html>
