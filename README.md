@@ -1,8 +1,7 @@
 # Ruql::Html
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ruql/html`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This formatter requires [ruql](https://github.com/saasbook/ruql) and
+allows formatting RuQL quizzes as HTML.
 
 ## Installation
 
@@ -22,7 +21,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The simplest usage is `ruql html quizfile.rb > output.html`.
+`ruql html -h` shows options that let you specify a different HTML/CSS
+template, among other things.
 
 ## Development
 
