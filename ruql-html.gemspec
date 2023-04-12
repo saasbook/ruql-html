@@ -6,9 +6,6 @@ require "ruql/html/version"
 Gem::Specification.new do |spec|
   spec.name          = "ruql-html"
   spec.version       = Ruql::Html::VERSION
-  spec.authors       = ["Armando Fox"]
-  spec.email         = ["fox@cs.berkeley.edu"]
-
   spec.summary     = "HTML 5 renderer for RuQL"
   spec.description = "HTML 5 renderer for RuQL"
   spec.authors     = ["Armando Fox"]
@@ -27,6 +24,7 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
   end
+  spec.add_runtime_dependency 'ruql', '~> 1.0', '>= 1.0.2'
   spec.add_runtime_dependency 'builder', '~> 3.0'
 
   # Specify which files should be added to the gem when it is released.
